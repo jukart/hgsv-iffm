@@ -1,0 +1,13 @@
+<div class="header">
+    Motor Count Down
+</div>
+<div class="body">
+    <div class="counter">
+        {{ '%02i:%02i'|sprintf:count / 60:count % 60 }}
+    </div>
+    <a ui-sref="main">
+        <div class="touch-menu-1">
+            Zurück
+        </div>
+    </a>
+</div>
