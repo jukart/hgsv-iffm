@@ -5,7 +5,7 @@ angular.module('hgsv-iffm').config([
       'countdown',
       {
         url: '/countdown',
-        templateUrl: 'screens/countdown/index.html',
+        templateUrl: '/screens/countdown/index.html',
         controller: [
           '$scope',
           '$interval',

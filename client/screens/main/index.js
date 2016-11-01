@@ -5,7 +5,7 @@ angular.module('hgsv-iffm').config([
       'main',
       {
         url: '/',
-        templateUrl: 'screens/main/index.html'
+        templateUrl: '/screens/main/index.html'
       }
     );
   }
