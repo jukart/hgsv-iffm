@@ -1,13 +1,15 @@
 <div class="header">
     Motor Count Down
 </div>
-<div class="body">
-    <div class="counter">
+<div class="body"
+     ng-click="goto('main')">
+    <div class="counter" ng-if="count > 0">
         {{ '%02i:%02i'|sprintf:count / 60:count % 60 }}
     </div>
-    <a ui-sref="main">
-        <div class="touch-menu-1">
-            Zurück
-        </div>
-    </a>
+    <div class="counter finished" ng-if="count === 0">
+        Fertig
+    </div>
+    <div class="touch-menu-1">
+        Zurück
+    </div>
 </div>
