@@ -1,0 +1,193 @@
+[
+    {
+        "id": "40c4589f.f11348",
+        "type": "tab",
+        "label": "websocket"
+    },
+    {
+        "id": "5719a998.33e128",
+        "type": "subflow",
+        "name": "Subflow 1",
+        "info": "",
+        "in": [],
+        "out": []
+    },
+    {
+        "id": "e790712c.4dfc2",
+        "type": "websocket-listener",
+        "z": "",
+        "path": "ws",
+        "wholemsg": "false"
+    },
+    {
+        "id": "c660e7fa.a9e258",
+        "type": "websocket out",
+        "z": "40c4589f.f11348",
+        "name": "",
+        "server": "e790712c.4dfc2",
+        "client": "",
+        "x": 1020,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "40ab5aa6.07ca04",
+        "type": "websocket in",
+        "z": "40c4589f.f11348",
+        "name": "",
+        "server": "e790712c.4dfc2",
+        "client": "",
+        "x": 80,
+        "y": 60,
+        "wires": [
+            [
+                "c2c10009.022b5"
+            ]
+        ]
+    },
+    {
+        "id": "c405cf5b.ea04b",
+        "type": "wifiscan",
+        "z": "40c4589f.f11348",
+        "name": "",
+        "x": 590,
+        "y": 80,
+        "wires": [
+            [
+                "1ba9c338.eb18ad"
+            ]
+        ]
+    },
+    {
+        "id": "1ba9c338.eb18ad",
+        "type": "function",
+        "z": "40c4589f.f11348",
+        "name": "wifi/router",
+        "func": "msg.payload = {\n    topic: 'system/wifi/router',\n    payload: msg.payload\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 760,
+        "y": 80,
+        "wires": [
+            [
+                "c660e7fa.a9e258"
+            ]
+        ]
+    },
+    {
+        "id": "91b9dcc.b82842",
+        "type": "switch",
+        "z": "40c4589f.f11348",
+        "name": "select topic",
+        "property": "payload.topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "wifi/scan",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "main/fullReload",
+                "vt": "str"
+            }
+        ],
+        "checkall": "false",
+        "outputs": 2,
+        "x": 370,
+        "y": 140,
+        "wires": [
+            [
+                "c405cf5b.ea04b"
+            ],
+            [
+                "70265b0e.550aa4"
+            ]
+        ]
+    },
+    {
+        "id": "70265b0e.550aa4",
+        "type": "function",
+        "z": "40c4589f.f11348",
+        "name": "online",
+        "func": "msg.payload = {\n    topic: 'system/online',\n    payload: true\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 750,
+        "y": 140,
+        "wires": [
+            [
+                "c660e7fa.a9e258"
+            ]
+        ]
+    },
+    {
+        "id": "c2c10009.022b5",
+        "type": "json",
+        "z": "40c4589f.f11348",
+        "name": "jsonifiy",
+        "x": 90,
+        "y": 140,
+        "wires": [
+            [
+                "91b9dcc.b82842",
+                "ff71c118.abd25"
+            ]
+        ]
+    },
+    {
+        "id": "ff71c118.abd25",
+        "type": "switch",
+        "z": "40c4589f.f11348",
+        "name": "motor management",
+        "property": "payload.topic",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "regex",
+                "v": "^motor/count",
+                "vt": "str",
+                "case": false
+            }
+        ],
+        "checkall": "true",
+        "outputs": 1,
+        "x": 390,
+        "y": 240,
+        "wires": [
+            [
+                "d43e4077.24a76"
+            ]
+        ]
+    },
+    {
+        "id": "e23ea2b5.0785",
+        "type": "file",
+        "z": "40c4589f.f11348",
+        "name": "motor.log",
+        "filename": "/home/pi/log/motor.log",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "false",
+        "x": 1020,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "d43e4077.24a76",
+        "type": "function",
+        "z": "40c4589f.f11348",
+        "name": "add timestamp",
+        "func": "msg.payload.ts = Date.now();\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 740,
+        "y": 240,
+        "wires": [
+            [
+                "e23ea2b5.0785"
+            ]
+        ]
+    }
+]
