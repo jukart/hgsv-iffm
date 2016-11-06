@@ -32,7 +32,7 @@ app.config([
 
             $scope.$on('$destroy', function() {
               unsubscribe();
-              refresher.stop();
+              $interval.cancel(refresher);
             });
           }
         ]

@@ -14,9 +14,11 @@ angular.module('hgsv-iffm').config([
           function($scope, $state, $interval, backend) {
             $scope.count = 180;
 
-            $interval(function() {
-              if ($scope.count > 0) {
-                $scope.count -= 1;
+            var counter = $interval(function() {
+              $scope.count -= 1;
+              if ($scope.count <= 0) {
+                backend.send('motor/count/finished', {});
+                $interval.cancel(counter);
               }
             }, 1000);
 
@@ -33,6 +35,10 @@ angular.module('hgsv-iffm').config([
             };
 
             backend.send('motor/count/start', {});
+
+            $scope.$on('$destroy', function() {
+              $interval.cancel(counter);
+            });
           }
         ]
       }
