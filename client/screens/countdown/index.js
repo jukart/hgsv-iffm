@@ -10,7 +10,8 @@ angular.module('hgsv-iffm').config([
           '$scope',
           '$state',
           '$interval',
-          function($scope, $state, $interval) {
+          'backend',
+          function($scope, $state, $interval, backend) {
             $scope.count = 180;
 
             $interval(function() {
@@ -20,8 +21,18 @@ angular.module('hgsv-iffm').config([
             }, 1000);
 
             $scope.goto = function(state) {
+              if ($scope.count > 0) {
+                backend.send(
+                  'motor/count/stop',
+                  {
+                    'at': $scope.count
+                  }
+                );
+              }
               $state.go(state);
             };
+
+            backend.send('motor/count/start', {});
           }
         ]
       }

@@ -9,6 +9,12 @@ body {
     cursor: none;
 }
 
+.right {
+    width: 240px;
+    position: fixed;
+    left: 80px;
+}
+
 .container {
     background: #888888;
     width: 320px;
@@ -27,16 +33,74 @@ body {
     cursor: none;
 }
 
+.col {
+    height: 39px;
+    width: 100%;
+    background: yellow;
+    font-size: 30px;
+    padding-left: 10px;
+}
+
 .touch-menu-1 {
     background: #0000FF;
     width: 100%;
-    height: 40px;
+    height: 39px;
     text-align: center;
     font-size: 30px;
     color: #FFFFFF;
     position: fixed;
     bottom: 0;
     cursor: none;
+}
+
+.touch-menu-2 {
+    background: #0000FF;
+    width: 100%;
+    height: 39px;
+    text-align: center;
+    font-size: 30px;
+    color: #FFFFFF;
+    position: fixed;
+    bottom: 40px;
+    cursor: none;
+}
+
+.touch-menu.left {
+    background: #0000FF;
+    width: 80px;
+    height: 39px;
+    text-align: left;
+    font-size: 30px;
+    color: #FFFFFF;
+    position: fixed;
+    cursor: none;
+    padding-left: 5px;
+}
+
+.one {
+    top: 40px;
+}
+
+.two {
+    top: 80px;
+}
+
+.three {
+    top: 120px;
+}
+
+.four {
+    top: 160px;
+}
+
+.five {
+    top: 200px;
+}
+
+.back {
+    bottom: 0;
+    text-align: center !important;
+    padding-left: 0px !important;
 }
 
 .counter {

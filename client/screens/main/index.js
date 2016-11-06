@@ -1,4 +1,6 @@
-angular.module('hgsv-iffm').config([
+var app = angular.module('hgsv-iffm');
+
+app.config([
   '$stateProvider',
   function($stateProvider) {
     $stateProvider.state(
@@ -9,10 +11,17 @@ angular.module('hgsv-iffm').config([
         controller: [
           '$scope',
           '$state',
-          function($scope, $state) {
+          '$ngRedux',
+          function($scope, $state, $ngRedux) {
             $scope.goto = function(state) {
               $state.go(state);
             };
+            var mapState = function(state) {
+              return _.get(state, 'topics.wifi', {});
+            };
+            $scope.state = {};
+            var unsubscribe = $ngRedux.connect(mapState, {})($scope.state);
+            $scope.$on('$destroy', unsubscribe);
           }
         ]
       }

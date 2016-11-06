@@ -1,5 +1,6 @@
 var path = require('path');
 var webpack = require('webpack');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var isProduction = !!(process.argv.filter(function(a) { return a === '-p';})).length;
 
@@ -18,10 +19,17 @@ if (isProduction) {
   }));
 }
 
+plugins.push(new CopyWebpackPlugin([
+  {
+    from: 'screens/main/index.html'
+  }
+]));
+
 var SRC_DIR = path.resolve(__dirname, 'client');
 
 module.exports = {
-  entry: path.resolve(__dirname, 'client', 'index'),
+  context: path.join(__dirname, 'client'),
+  entry: path.resolve(__dirname, 'client', 'bundle'),
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'client.bundle.js'
@@ -29,6 +37,14 @@ module.exports = {
   resolve: {
     extensions: ['', '.js']
   },
+  module: {
+    loaders: [
+      {
+        test: /\.html$/,
+        loader: 'file-loader?name=[name].[ext]!extract-loader!html-loader'
+      }
+    ]
+  },
   devtool: 'source-map',
   plugins: 'plugins'
-}
+};

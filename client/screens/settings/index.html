@@ -1,0 +1,14 @@
+<div class="header" style="font-size: 30px">
+    Settings
+</div>
+<div class="body right">
+    <div class="col" ng-repeat="obj in state.wifi.router">{{ obj.ssid }}</div>
+</div>
+<div class="touch-menu left one"
+     ng-click="goto('settings.wifi')">
+    wifi
+</div>
+<div class="touch-menu left back"
+     ng-click="goto('main')">
+    <-
+</div>
