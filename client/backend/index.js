@@ -18,12 +18,15 @@ app.factory('backend', [
       dataStream = $websocket('ws://' + host + path);
      
       dataStream.onOpen(function() {
+        backend.connectionState('connected');
         console.log('Connection to backend opened');
       });
       dataStream.onClose(function() {
+        backend.connectionState('closed');
         console.log('Connection to backend closed');
       });
       dataStream.onError(function() {
+        backend.connectionState('error');
         console.log('Websocket error');
       });
       dataStream.onMessage(function(message) {
@@ -41,6 +44,7 @@ app.factory('backend', [
                                          backendControlActions
                                         )(backend);
       send('main/fullReload', '');
+      backend.connectionState('connecting');
 
       return dataStream;
     };
@@ -64,7 +68,7 @@ app.factory('backend', [
 app.factory(
   'backendControlReducer',
   [
-    function(backend) {
+    function() {
       return function(state, action) {
         switch (action.type) {
           case 'topicReceived':
@@ -72,6 +76,10 @@ app.factory(
             var path = action.topic.replace(/\//g, '.');
             _.set(result, path, action.payload);
             return result;
+          case 'connectionState':
+            return {
+              state: action.state
+            };
           default:
             return state || {};
         }
@@ -90,7 +98,38 @@ app.factory(
           topic: topic,
           payload: payload
         };
+      },
+      connectionState: function(state) {
+        return {
+          type: 'connectionState',
+          state: state
+        };
       }
     };
   }
 );
+
+app.service('$websocketBackend', [
+  'WebSocket',
+  function(WebSocket) {
+    /*
+     * A websocket with reconnection functions.
+     *
+     * This replaces the websocketBackend used in angular websocket.
+     */
+    this.create = function create(url, protocols) {
+      var match = /wss?:\/\//.exec(url);
+    
+      if (!match) {
+        throw new Error('Invalid url provided');
+      }
+    
+      if (protocols) {
+        return new WebSocket(url, protocols);
+      }
+    
+      return new WebSocket(url);
+    };
+  }]
+);
+

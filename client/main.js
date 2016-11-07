@@ -2,6 +2,7 @@ var app = angular.module(
   'hgsv-iffm',
   ['ui.router',
    'angular-websocket',
+   'reconnectingWebSocket',
    'ngRedux',
    'sprintf'
   ]);
